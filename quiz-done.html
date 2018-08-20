@@ -1,0 +1,184 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="http://use.edgefonts.net/expletus-sans.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="sweetalert-master/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link href="sweetalert-master/dist/sweetalert.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        label {
+            font-size:14px;
+            font-weight:500; 
+            font-family: expletus-sans, sans-serif;
+            text-transform:uppercase;
+            margin:5px;  
+            
+        }
+        h5 {
+            text-transform: uppercase;
+            font-size: 20px;
+            padding:5px;
+            margin:5px;
+        }
+        #submit-blue {
+            padding: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            background: blue;
+            color: white;
+        }
+        #test {
+            border: 1px solid rgba( 227, 146, 83, 0.721 );
+            background: rgba( 240, 204, 177, 0.721 );
+            display: block;
+            margin-left:auto;
+            margin-right:auto;
+            padding: 10px;
+            max-width:550px;
+        }
+        #test_status {
+            border: 1px solid rgba( 227, 146, 83, 0.721 );
+            background: rgba( 240, 204, 177, 0.721 );
+            display: block;
+            margin-left:auto;
+            margin-right:auto;
+            padding: 10px;
+            max-width:550px; 
+            text-align:center;
+        }
+        h2 {
+            color:rgba( 46, 39, 14, 0.721 );
+            text-transform:uppercase;
+            font-size:24px;
+            font-family: expletus-sans, sans-serif;
+        }
+        #pytanie {
+            display: block;
+            margin:auto;
+            text-align:center;
+            width:90%;
+            max-width:650px;
+            color:white;
+        }
+        #naglowek {
+            border:1px solid rgba( 159, 74, 8, 0.721 );
+            padding:5px;
+            max-width:550px;
+            height:auto;
+            font-size: 22px;
+            font-family: expletus-sans, sans-serif;
+            text-align: center;
+            background: rgba( 223, 117, 36, 0.721 );
+            line-height: 1, 3;
+            margin-top:0;
+            padding:10px;
+        }
+        #pytodp {
+            margin:10px;
+            padding:5px;
+        }
+        #zdjecia img {
+            max-width:500px;
+            max-height:300px;
+            width:90%;
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+            margin-top:30px; 
+            
+        }
+    </style>
+    <script>
+        
+        var pos = 0, test, test_status, question, choice, choices, chA, chB, chC, correct = 0;
+
+        var questions = [
+            ["Jakiego państwa stolicą jest Budapeszt?", "Austria", "Litwa", "Węgry", "C"],
+            ["Z jakim państwem NIE sąsiaduje Polska?", "Rosja", "Słowacja", "Rumunia", "C"],
+            ["Które państwo ma największą powierzchnie na świecie?", "Rosja", "USA", "Brazylia", "A"],
+            ["Kto z kim toczył spór w tak zwanej wojnie 100-letniej?", "Francja z Rosją", "Niemcy z Anglią", "Francja z Anglią", "C"],
+            ["Na jakim kontynencie znajduje się wodospad Niagara?", "Ameryka Południowa", "Ameryka Północna", "Afryka", "B"],
+            ["Które z poniższych miast NIGDY nie było stolicą Polski?", "Toruń", "Kraków", "Gniezno", "A"],
+            ["W którym roku Krzysztof Kolumb odkrył Amerykę?", "1450", "1492", "1517", "B"],
+            ["Która planetą od słońca jest Wenus?", "2", "3", "4", "A"],
+            ["Po ilu latach niewoli Polska odzyskała niepodległość w roku 1918?", "121", "123", "125", "B"],
+            ["Jaki jest najwyższy szczyt POLSKICH Tatr?", "Snieżka", "Gerlach", "Rysy", "C"],
+            ["Jakie miasto jest stolicą Szwecji?", "Sztokholm", "Oslo", "Malmo", "A"],
+            ["Kto był ostatnim Królem Polski przedrozbiorowej?", "Stanisław August Poniatowski", "Zygmunt Stary", "Jan Olbracht", "A"],
+        ];
+
+
+
+        function pytania(x) {
+            for (var z = 0; z <= questions.length; z++) {
+                document.getElementById(x).innerHTML += (z + 1) + " " + questions[z][0] + "<br>" + "<strong>Prawidłowa odpowiedź to: </strong>" + questions[z][4] + " ";
+                    
+                if (questions[z][4] == "C") {
+                    document.getElementById(x).innerHTML += "("+ questions[z][3] + ")<br>";
+                    } 
+                    else if (questions[z][4] == "B") {
+                    document.getElementById(x).innerHTML += "("+ questions[z][2] + ")<br>";
+                    } 
+                    else if (questions[z][4] == "A") {
+                    document.getElementById(x).innerHTML += "("+ questions[z][1] + ")<br>";
+                }
+
+            }
+
+        }
+
+        function renderQuestion() {
+            if (pos >= questions.length) {
+                document.getElementById("test_status").innerHTML = "Dziękuje Ci za wzięcie udziału w quizie!";
+                document.getElementById("test").innerHTML = "<h5><strong>Udało Ci się udzielić " + Math.round((correct/12*100)).toFixed(0) + "% poprawnych odpowiedzi " + "(" + correct + " na 12) </strong></h5>" + "<br>";
+                pytania("test");
+            }
+
+            chA = questions[pos][1];
+            chB = questions[pos][2];
+            chC = questions[pos][3];
+            document.getElementById("test_status").innerHTML = "Pytanie " + (pos + 1) + " z " + questions.length;
+            document.getElementById("test").innerHTML = "<div id='zdjecia'><img src='images/" + (pos + 1) + ".jpg'></div>"; 
+            document.getElementById("test").innerHTML += "<div id='pytanie'><h3 id='naglowek'>" + questions[pos][0] + "</div>";
+            document.getElementById("test").innerHTML += "<input type='radio' name='choices' id='A' value='A'>" + "<label for='A'>" + chA + "</label>" + "<br>";
+            document.getElementById("test").innerHTML += "<input type='radio' name='choices' id='B' value='B'>" + "<label for='B'>" + chB + "</label>" + "<br>";
+            document.getElementById("test").innerHTML += "<input type='radio' name='choices' id='C' value='C'>" + "<label for='C'>" + chC + "</label>" + "<br>";
+            document.getElementById("test").innerHTML += "<button id='submit_blue' style='padding:5px; margin-top:5px; margin-bottom:5px; margin-left:auto; margin-right:auto; display:block; background:rgba( 240, 181, 121, 0.721 ); border:1px solid rgba( 148, 84, 34, 0.721 ); color:rgba( 0, 0, 0, 0.721 );' type='submit' value='submit' onclick='odp()'>Odpowiedź!</button>";
+        }
+        var chx = document.getElementsByTagName('input');
+
+        function odp() {
+            choices = document.getElementsByName("choices");
+            for (var y = 0; y < choices.length; y++) {
+                if (choices[0].checked == false && choices[1].checked == false && choices[2].checked == false) {
+                    swal("Proszę wybrać chociaż jedną odpowiedź");
+                    swal();
+                    return false;
+                    renderQuestion();
+                }
+                if (choices[y].checked) {
+                    choice = choices[y].value;
+                    if (choice == questions[pos][4]) {
+                        correct++;
+                    }
+                }
+            }
+            pos++;
+            renderQuestion();
+        }
+        
+    </script>
+</head>
+
+<body onload="renderQuestion()">
+    <h2 id="test_status"></h2>
+    <div id="test"></div>
+    <div id="example">
+    </div>
+</body>
+</html>
